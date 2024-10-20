@@ -1,5 +1,5 @@
 const express = require('express')
-const  Pool  = require('pg')
+const  {Pool}  = require('pg')
 const morgan = require('morgan')
 
 //create an instance of the express application
