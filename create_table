@@ -1,0 +1,147 @@
+create database warehouse_db;
+
+\c warehouse_db;
+
+use warehouse_db;
+
+create table warehouse_tbl
+    (
+        warehouse_id int not null,
+        warehouse_name text not null,
+        year_created int,
+        street_address text,
+        city char varying(100),
+        state varchar(2),
+        zip varchar(10),
+        constraint "prim_key" primary key(warehouse_id)
+    );
+
+    create sequence hist_id_seq;
+
+    create table history
+        (
+            history_id int not null default nextval('hist_id_seq'),
+            date timestamp without time zone,
+            amount int,
+            data text,
+            customer_id int,
+            warehouse_id int,
+            constraint "prim_key2" primary key(history_id),
+            constraint "forn_key" foreign key(warehouse_id) references warehouse_tbl(warehouse_id)
+        );
+
+
+        //ALTERING TBLES
+
+        alter table warehouse_tbl add column phone_no int;
+
+        //drop a column
+
+        alter table warehouse_tbl drop column phone_no;
+
+        //TRUNCATING TABLES
+
+        truncate table warehouse_tbl;
+
+        //INSERTING DATA
+
+        insert into warehouse_tbl
+            (
+                warehouse_id,
+                warehouse_name,
+                year_created,
+                street_address,
+                city,
+                state,
+                zip
+            )
+            values (1,'Mark Corp',2009,'207-F Main Service Road East','New London','CT',4321);
+
+
+//UPDATING DATA
+
+update warehouse_tbl set year_created = 2010 where year_created = 2009;
+
+//DELETING DATA
+
+insert into warehouse_tbl
+    values(2,'Bill & Co',2014,'Lilly Road','New London','CT',4321);
+
+insert into warehouse_tbl
+    values(3,'West point',2013,'Down Town','New London','CT',4231);
+
+//The DELETE command is used to drop a row from a table, whereas
+//the DROP command is used to drop a complete table. The TRUNCATE
+//command is used to empty the whole table.
+
+create table tools
+    (
+        tool_id int unique,
+        tool_name text,
+        tool_class numeric
+    );
+
+create table cards
+    (
+        card_id int,
+        owner_number int,
+        owner_name text,
+        unique(card_id, owner_number)
+    );
+
+create table tools
+    (
+        tool_id int not null,
+        tool_name text,
+        tool_class numeric,
+        unique(tool_id)
+    );
+
+    alter table tools
+        add constraint "prim_key2" primary key(tool_id);
+
+    create table tools_list
+        (
+            list_id int primary key,
+            tool_id int,
+            list_name text,
+           constraint "forn_key" foreign key(tool_id) references tools(tool_id)
+        );
+
+
+
+
+    CREATE  OR REPLACE FUNCTION getRecords()
+    RETURNS INTEGER AS $$
+    DECLARE 
+        total INTEGER;
+    BEGIN
+        SELECT COUNT(*) INTO total FROM warehouse_tbl;
+        RETURN  total;
+    END;
+    $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION getSum()
+RETURNS INTEGER AS $$
+
+DECLARE
+ total INTEGER;
+BEGIN
+ SELECT COUNT(*) INTO total FROM warehouse_tbl;
+ RETURN total;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION yearB()
+RETURNS INTEGER AS $$
+
+DECLARE
+ _year INTEGER;
+BEGIN
+ select year_created AS YearCreated INTO _year from warehouse_tbl WHERE year_created < 2014;
+ RETURN _year;
+
+END;
+$$ LANGUAGE plpgsql;
