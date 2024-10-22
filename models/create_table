@@ -145,3 +145,27 @@ BEGIN
 
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION alias_explain(int)
+RETURNS INTEGER AS $$
+
+DECLARE
+ total ALIAS FOR $1;
+
+BEGIN
+ RETURN total * 10;
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION func_params(a int, IN b int, OUT plus int, OUT sub int) 
+AS $$
+
+BEGIN
+ plus := a + b ;
+ sub := a - b ;
+
+END;
+$$ LANGUAGE plpgsql;
