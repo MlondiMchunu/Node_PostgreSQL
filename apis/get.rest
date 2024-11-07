@@ -1,3 +1,4 @@
 
 GET http://localhost:3003/get_users/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA5ODU3NjksImV4cCI6MTczMDk4OTM2OX0.XpdLmg-L30Q2APSGk7mLssO4enGySxnXQW22H642WJc
 

@@ -10,17 +10,26 @@ userRouter.get('/', async (req, res) => {
 
 userRouter.get('/get_users', async (req, res) => {
 
-
     try {
-        const query1 = 'SELECT * FROM users';
-        const user = await pools.query(query1)
 
-        if (!user.rows[5] === 'admin') {
-            console.log("cannot view resource")
+        const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET)
+        if (!decodedToken.iat) {
+            res.status(401).json({ error: "Invalid token" })
+            console.log("invalid token")
         }
 
-        console.log(user)
+        const query1 = 'SELECT * FROM users'
 
+        const query2 = 'SELECT emp_type FROM users WHERE emp_type = "admin"'
+
+        const user = await pools.query(query1)
+
+        
+
+        console.log(user.ro)
+        //if(user.oid)
+
+        
         res.json(user.rows)
 
     } catch (err) {
@@ -98,9 +107,10 @@ userRouter.post('/login', async (req, res) => {
             throw new Error("Token generation failed")
         }
 
-        console.log("Token : ", token)
+        res.cookie('t', token, { expire: new Date() + 9999 })
 
-        res.cookie('t', token, { expireIn: new Date() + 9999 })
+        console.log("Token : ", token)
+        //console.log(cookie)
 
     } catch (error) {
         console.log(error)
@@ -149,7 +159,7 @@ userRouter.get('/signout', (req, res) => {
         res.clearCookie('t')
         res.json("Signed out")
 
-        console.log(res)
+        //console.log(res)
     } catch (err) {
         res.json(err)
         console.error(err)
