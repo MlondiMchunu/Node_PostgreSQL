@@ -144,11 +144,16 @@ userRouter.delete('/users/:id', async (req, res) => {
     }
 })
 
-userRouter.get('/signout',(req,res)=>{
-    res.clearCookie('t')
-    res.json("Signed out")
+userRouter.get('/signout', (req, res) => {
+    try {
+        res.clearCookie('t')
+        res.json("Signed out")
 
-    console.log(res)
+        console.log(res)
+    } catch (err) {
+        res.json(err)
+        console.error(err)
+    }
 })
 
 module.exports = userRouter
