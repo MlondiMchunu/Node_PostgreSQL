@@ -176,5 +176,11 @@ create table admin(
     emp_no int not null default nextval('seqid'),
     fname varchar(255) not null,
     email varchar(255) not null,
-    constraint 'pk' primary key(emp_no)
+    constraint "pk1" primary key(emp_no)
 );
+
+insert into admin(fname,email)
+    values('spider','spider@gmail.com'),
+          ('drstrange','drstrange@gmail.com'),
+          ('james','james@gmail.com');
+
