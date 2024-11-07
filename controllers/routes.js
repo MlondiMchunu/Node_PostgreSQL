@@ -101,7 +101,6 @@ userRouter.post('/login', async (req, res) => {
         console.log("Token : ", token)
 
         res.cookie('t', token, { expireIn: new Date() + 9999 })
-        console.log()
 
     } catch (error) {
         console.log(error)
