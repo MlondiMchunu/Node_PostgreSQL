@@ -24,9 +24,9 @@ userRouter.get('/get_users', async (req, res) => {
 
         const user = await pools.query(query1)
 
-        
+        const admin = await pools.query(query2)
 
-        console.log(user.ro)
+        console.log(user.rows)
         //if(user.oid)
 
         
