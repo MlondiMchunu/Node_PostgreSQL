@@ -13,9 +13,15 @@ userRouter.get('/get_users', async (req, res) => {
 
     try {
         const query1 = 'SELECT * FROM users';
-        const result = await pools.query(query1)
+        const user = await pools.query(query1)
 
-        res.json(result.rows)
+        if (!user.rows[5] === 'admin') {
+            console.log("cannot view resource")
+        }
+
+        console.log(user)
+
+        res.json(user.rows)
 
     } catch (err) {
         console.error(err)
@@ -72,12 +78,11 @@ userRouter.post('/login', async (req, res) => {
 
         if (user.rowCount == 0) {
             console.log("check username and password match")
-            res.status(401).json({error:"check username and password match"})
+            res.status(401).json({ error: "check username and password match" })
         } else {
             console.log(user.rows)
-            res.status(200).json(user.rows)
+            //res.status(200).json(user.rows)
         }
-
 
         const userForToken = {
             username: user.username,
@@ -87,25 +92,28 @@ userRouter.post('/login', async (req, res) => {
         const token = jwt.sign(
             userForToken,
             process.env.SECRET,
-            {expiresIn: 60*60}
+            { expiresIn: 60 * 60 }
         )
         if (!token) {
             throw new Error("Token generation failed")
         }
 
-        console.log("Token : ",token)
+        console.log("Token : ", token)
+
+        res.cookie('t', token, { expireIn: new Date() + 9999 })
+        console.log()
 
     } catch (error) {
-        res.json(error)
         console.log(error)
+        res.json(error)
     }
 })
 
 //limit deletion of users by only authorized users
-const getTokenFrom = req =>{
+const getTokenFrom = req => {
     const authorization = req.get('authorization')
-    if(authorization && authorization.startsWith('Bearer')){
-        return authorization.replace('Bearer ','')
+    if (authorization && authorization.startsWith('Bearer')) {
+        return authorization.replace('Bearer ', '')
     }
     return null
 }
@@ -115,9 +123,9 @@ userRouter.delete('/users/:id', async (req, res) => {
     try {
         const id = req.params.id
 
-        const decodedToken = jwt.verify(getTokenFrom(req),process.env.SECRET)
-        if(!decodedToken.iat){
-            res.status(401).json({error:"Invalid token"})
+        const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET)
+        if (!decodedToken.iat) {
+            res.status(401).json({ error: "Invalid token" })
             console.log("invalid token")
         }
         //console.log(decodedToken)
@@ -126,15 +134,22 @@ userRouter.delete('/users/:id', async (req, res) => {
         const values = [id]
         const result = await pools.query(query, values)
 
-        res.json({  message: 'User deleted succesfully!' })
+        res.json({ message: 'User deleted succesfully!' })
         //res.json(result.rows)
 
     } catch (err) {
         //console.error(err)
-        
+
         res.status(500).json({ error: err })
         console.error("User not allowed to perform operation")
     }
+})
+
+userRouter.get('/signout',(req,res)=>{
+    res.clearCookie('t')
+    res.json("Signed out")
+
+    console.log(res)
 })
 
 module.exports = userRouter
