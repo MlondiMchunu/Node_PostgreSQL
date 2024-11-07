@@ -169,3 +169,12 @@ BEGIN
 
 END;
 $$ LANGUAGE plpgsql;
+
+
+create sequence seqid;
+create table admin(
+    emp_no int not null default nextval('seqid'),
+    fname varchar(255) not null,
+    email varchar(255) not null,
+    constraint 'pk' primary key(emp_no)
+);
