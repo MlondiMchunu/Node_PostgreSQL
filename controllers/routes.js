@@ -8,7 +8,9 @@ userRouter.get('/', async (req, res) => {
     res.send('<h1>Welcome to Home Page</h1> <p>THis is the Home Page of CRUD API</p>')
 })
 
-userRouter.get('/get_users', async (req, res) => {
+userRouter.get('/get_users/:id', async (req, res) => {
+
+    //const userId = req.params.
 
     try {
 
@@ -18,19 +20,29 @@ userRouter.get('/get_users', async (req, res) => {
             console.log("invalid token")
         }
 
+        const userId = req.params.id
+       // console.log("this is the request",req)
+
         const query1 = 'SELECT * FROM users'
 
-        const query2 = 'SELECT emp_type FROM users WHERE emp_type = "admin"'
+        const query2 = 'SELECT role FROM users WHERE role = $1'
+        const values = [userId]
 
         const user = await pools.query(query1)
 
-        const admin = await pools.query(query2)
+        const admin = await pools.query(query2,values)
 
-        console.log(user.rows)
+        //console.log(user.rows)
         //if(user.oid)
-
+        console.log(userId)
+        console.log(admin.rows.values())
         
-        res.json(user.rows)
+
+        if (admin.rowCount===2) {
+            res.json(user.rows)
+        } else {
+            res.json({ message: "cannot access resource" })
+        }
 
     } catch (err) {
         console.error(err)
