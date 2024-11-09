@@ -41,15 +41,14 @@ userRouter.get('/get_users/:id', async (req, res) => {
         const roles = []
         rows.forEach(row => {
             //console.log('Name:', row.name)
-            console.log('Role:', row.role)
-            res.json(row.role)
-        
+            roles.push(row)
         })
+        
 
         if (rows.role === 0) {
             res.json(user.rows)
-        }else{
-            res.json({message: "cannot access router"})
+        } else {
+            res.json({ message: "cannot access router" })
         }
         /* if (admin.rowCount === 2) {
              res.json(user.rows)
