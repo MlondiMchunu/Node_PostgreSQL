@@ -21,24 +21,29 @@ userRouter.get('/get_users/:id', async (req, res) => {
         }
 
         const userId = req.params.id
-       // console.log("this is the request",req)
+        // console.log("this is the request",req)
 
         const query1 = 'SELECT * FROM users'
 
-        const query2 = 'SELECT role FROM users WHERE role = $1'
+        const query2 = 'SELECT * FROM users WHERE role = $1'
         const values = [userId]
 
         const user = await pools.query(query1)
 
-        const admin = await pools.query(query2,values)
+        const admin = await pools.query(query2, values)
 
         //console.log(user.rows)
         //if(user.oid)
         console.log(userId)
-        console.log(admin.rows.values())
-        
 
-        if (admin.rowCount===2) {
+        const rows = user.rows
+
+        rows.forEach(row=>{
+            console.log('Role:',row.role)
+        })
+
+
+        if (admin.rowCount === 2) {
             res.json(user.rows)
         } else {
             res.json({ message: "cannot access resource" })
