@@ -195,3 +195,14 @@ create table books(
     constraint "pkb" primary key(isbn)
 );
 
+insert into books
+    values(11,'Java','Author-J'),
+          (12,'Python','Author-P'),
+          (13,'HTML','Author-H'),
+          (14,'Javascript','Author-JS');
+
+
+
+alter table books add constraint "fkb" foreign key(id) references users(id);
+
+update books set id = 1 where isbn = 12;
