@@ -7,7 +7,7 @@ const port = process.env.PORT
 const pool = new Pool({
     user: 'postgres',
     host: '127.0.0.1',
-    database: 'test',
+    database: 'bookstore',
     password: pswd,
     port: port
 

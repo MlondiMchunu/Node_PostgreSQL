@@ -187,3 +187,11 @@ insert into users(name,email,username,password,emp_type)
 alter table users add column emp_type varchar(255) default 'user1';
 
 
+
+create table books(
+    isbn int not null unique,
+    title varchar(255) not null,
+    author varchar(255) not null,
+    constraint "pkb" primary key(isbn)
+);
+

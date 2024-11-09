@@ -5,7 +5,7 @@ require('dotenv').config()
 
 
 userRouter.get('/', async (req, res) => {
-    res.send('<h1>Welcome to Home Page</h1> <p>THis is the Home Page of CRUD API</p>')
+    res.send('<h1>Welcome to Home Page </h1> <p>THis is the Home Page of CRUD API</p><br>Facebook')
 })
 
 userRouter.get('/get_users/:id', async (req, res) => {
@@ -56,7 +56,7 @@ userRouter.get('/get_users/:id', async (req, res) => {
             }
         })
         if(!responseSent){
-            res.json({message:'no allowed to access resource'})
+            res.status(400).json({message:'not allowed to access resource'})
         }
 
        /* if (roles === 0) {
