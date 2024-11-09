@@ -1,5 +1,5 @@
 const userRouter = require('express').Router()
-const pools = require('../models/users')
+const pools = require('../models/db')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
