@@ -38,16 +38,24 @@ userRouter.get('/get_users/:id', async (req, res) => {
 
         const rows = user.rows
 
-        rows.forEach(row=>{
-            console.log('Role:',row.role)
+        const roles = []
+        rows.forEach(row => {
+            //console.log('Name:', row.name)
+            console.log('Role:', row.role)
+            res.json(row.role)
+        
         })
 
-
-        if (admin.rowCount === 2) {
+        if (rows.role === 0) {
             res.json(user.rows)
-        } else {
-            res.json({ message: "cannot access resource" })
+        }else{
+            res.json({message: "cannot access router"})
         }
+        /* if (admin.rowCount === 2) {
+             res.json(user.rows)
+         } else {
+             res.json({ message: "cannot access resource" })
+         }*/
 
     } catch (err) {
         console.error(err)
