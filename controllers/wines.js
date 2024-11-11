@@ -34,16 +34,25 @@ winesRouter.post('/wines', async (req, res) => {
     }
 })
 
+const getTokenFrom = req => {
+    const authorization = req.get('authorization')
+    if (authorization && authorization.startsWith('Bearer')) {
+        return authorization.replace('Bearer', '')
+    } return null
+}
+
 winesRouter.delete('/wines/:id', async (req, res) => {
 
     try {
-        const  id  = req.params.id
+        const id = req.params.id
         console.log(id)
+
+        const decodedToken = jwt.verify(get)
 
         const query = 'DELETE FROM wines WHERE code = $1 RETURNING *'
         const values = [id]
 
-        const wine = await pools.query(query,values)
+        const wine = await pools.query(query, values)
 
         res.json({ message: "wine was deleted succesfully" })
         console.log(wine.rows, " deleted")
