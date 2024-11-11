@@ -209,4 +209,5 @@ alter table books add constraint "fkb" foreign key(id) references users(id);
 update books set id = 45 where isbn = 14;
 
 
-create view as select 
+insert into wines(code,brand,location,id,year,price)
+    values(11,'Wine-1','Karoo',2,2021,7000.8);

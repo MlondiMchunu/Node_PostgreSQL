@@ -37,19 +37,21 @@ winesRouter.post('/wines', async (req, res) => {
 winesRouter.delete('/wines/:id', async (req, res) => {
 
     try {
-        const { id } = req.body
+        const  id  = req.params.id
+        console.log(id)
 
-        const query = 'DELETE FROM wines WHERE id = $1 RETURNING *'
+        const query = 'DELETE FROM wines WHERE code = $1 RETURNING *'
         const values = [id]
 
-        const wine = await pools.query(query)
+        const wine = await pools.query(query,values)
 
-        res.json({ message: "message was deleted succsfully" })
+        res.json({ message: "wine was deleted succesfully" })
         console.log(wine.rows, " deleted")
     }
 
     catch (err) {
-        res.status(400).json({ message: "wine could not be deleted" })
+        res.status(400).json(err)
+
     }
 })
 
