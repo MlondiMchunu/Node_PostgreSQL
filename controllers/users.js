@@ -160,7 +160,6 @@ const getTokenFrom = req => {
     return null
 }
 
-
 userRouter.delete('/users/:id', async (req, res) => {
     try {
         const id = req.params.id
