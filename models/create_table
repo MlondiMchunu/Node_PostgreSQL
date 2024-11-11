@@ -1,3 +1,4 @@
+-- Active: 1729413274631@@127.0.0.1@5432@winery
 create database warehouse_db;
 
 \c warehouse_db;
@@ -206,3 +207,6 @@ insert into books
 alter table books add constraint "fkb" foreign key(id) references users(id);
 
 update books set id = 45 where isbn = 14;
+
+
+create view as select 

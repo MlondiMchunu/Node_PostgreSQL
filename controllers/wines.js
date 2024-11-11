@@ -8,7 +8,7 @@ winesRouter.get('/get_wines', async (req, res) => {
 
         const query = 'SELECT * FROM wines'
         const wines = await pools.query(query)
-        res.json(wines)
+        res.json(wines.rows)
 
     } catch (err) {
         console.log(err)

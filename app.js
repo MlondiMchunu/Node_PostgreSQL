@@ -10,6 +10,6 @@ app.use(morgan('dev'))
 
 app.use('/',userRouter);
 app.use('/users',userRouter)
-app.use('/get_wines',winesRouter)
+app.use('/',winesRouter)
 
 module.exports = app
