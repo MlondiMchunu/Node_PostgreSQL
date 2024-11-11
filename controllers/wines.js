@@ -15,3 +15,5 @@ winesRouter.get('/get_wines', async (req, res) => {
         res.status(500).json(err)
     }
 })
+
+module.exports = winesRouter
