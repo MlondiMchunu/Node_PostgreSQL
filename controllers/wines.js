@@ -34,8 +34,15 @@ winesRouter.post('/wines', async (req, res) => {
     }
 })
 
-winesRouter.delete('/wines', async (req, res) => {
-    
+winesRouter.delete('/wines/:id', async (req, res) => {
+    const { id } = req.body
+
+    const query = 'DELETE FROM wines WHERE id = $1 RETURNING *'
+    const values = [id]
+
+    const wine = await pools.query(query)
+
+    res.json({ message: "message was deleted succsfully" })
 })
 
 module.exports = winesRouter
