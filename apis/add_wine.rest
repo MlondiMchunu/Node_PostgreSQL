@@ -1,0 +1,11 @@
+POST http://localhost:3003/wines
+Content-Type: application/json
+
+{
+    "code":15,
+    "brand":"Wine-5", 
+    "location":"Durban, KZN", 
+    "id":41, 
+    "year":1987, 
+    "price":35000.00
+}
