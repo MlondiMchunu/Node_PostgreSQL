@@ -3,6 +3,7 @@ const pools = require('../models/db')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
+
 winesRouter.get('/get_wines', async (req, res) => {
     try {
 
@@ -14,6 +15,22 @@ winesRouter.get('/get_wines', async (req, res) => {
         console.log(err)
         res.status(500).json(err)
     }
+})
+
+winesRouter.get('/get_wines/:id',async(req,res)=>{
+	const id = req.params.id
+	
+	try{
+		const query = 'SELECT * FROM wines WHERE id = $1'
+		const values = [id]
+		const wines = await pools.query(query,values)
+		
+		res.json(wines.rows)
+		
+	}catch(err){
+		console.log(err)
+		res.status(500).json(err)
+	}
 })
 
 winesRouter.post('/wines', async (req, res) => {
@@ -37,8 +54,9 @@ winesRouter.post('/wines', async (req, res) => {
 const getTokenFrom = req => {
     const authorization = req.get('authorization')
     if (authorization && authorization.startsWith('Bearer')) {
-        return authorization.replace('Bearer', '')
-    } return null
+        return authorization.replace('Bearer ', '')
+    }
+    return null
 }
 
 winesRouter.delete('/wines/:id', async (req, res) => {
@@ -47,7 +65,11 @@ winesRouter.delete('/wines/:id', async (req, res) => {
         const id = req.params.id
         console.log(id)
 
-        const decodedToken = jwt.verify(get)
+        const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET)
+        if (!decodedToken.iat) {
+            res.status(401).json({ error: "Invalid token" })
+            console.log("Invalid token")
+        }
 
         const query = 'DELETE FROM wines WHERE code = $1 RETURNING *'
         const values = [id]
@@ -60,6 +82,7 @@ winesRouter.delete('/wines/:id', async (req, res) => {
 
     catch (err) {
         res.status(400).json(err)
+        console.error(err)
 
     }
 })
